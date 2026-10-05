@@ -46,6 +46,22 @@ conditional guidance for the rgbwalker connector. Regenerate both with
 `python3 scripts/generate_pinout.py` after installing
 `scripts/requirements-docs.txt` in a Python virtual environment.
 
+### Original CPC464 keyboard PCB
+
+The original CPC464 keyboard PCB with the inline 19-wire connection is also
+expected to work: its passive switch matrix matches the arrangement targeted
+by this firmware, as shown in the
+[Amstrad service manual](https://retronik.silicium.org/DOCUMENTS/Info/Amstrad_CPC/Amstrad%20CPC464%20CTM640%20GT64%20Service%20Manual.pdf).
+The existing keymap should apply to the English/QWERTY version.
+
+Disconnect the keyboard from the CPC motherboard, even when the CPC is powered
+off; the Pico takes over keyboard scanning. Verify your connector's numbering,
+orientation and switch continuity against the wiring notes before connecting it.
+Keep `GOODJOHN_MATRIX_HAS_DIODES=OFF` (the default), since the original matrix
+lacks per-key diodes and needs ghost suppression. Compatibility is expected but
+has not yet been tested on original hardware; other connector revisions may
+require a different harness.
+
 ## Build
 
 Prerequisites: CMake, Make or Ninja, Python 3, an Arm bare-metal GCC toolchain
