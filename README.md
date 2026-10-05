@@ -9,6 +9,13 @@ keyboard**, and **exclusive control of a keyboard disconnected from the CPC
 motherboard**. These are the agreed initial requirements. The passive keyboard
 connects to Pico GPIO; the Pico's USB connector connects to the PC.
 
+[![Minimal wiring from a Raspberry Pi Pico to a 19-pin CPC keyboard connector](docs/wiring.svg)](docs/wiring.svg)
+
+The drawing's **J1 adapter connector** uses the contact numbering of Bread80's
+CPC464 **J3 keyboard connector**. Its square contact 1 is shown at the bottom;
+labels give **GPIO / physical Pico pin**. See the [pinout sheet](docs/pinout.pdf)
+for connector checks and assembly details.
+
 ## Current state
 
 There is a buildable C firmware foundation using the Raspberry Pi Pico SDK and
@@ -45,6 +52,10 @@ list, a full Pico header diagram, assembly steps and continuity checks, plus
 conditional guidance for the rgbwalker connector. Regenerate both with
 `python3 scripts/generate_pinout.py` after installing
 `scripts/requirements-docs.txt` in a Python virtual environment.
+Regenerate the README's [SVG wiring diagram](docs/wiring.svg) with
+`python3 scripts/generate_wiring_svg.py` in the same environment. It reuses the
+Pico artwork from the supplied [pico-pinout.svg](pico-pinout.svg) and the same
+firmware-derived wiring data as the sheets.
 
 ### Original CPC464 keyboard PCB
 

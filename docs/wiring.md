@@ -5,6 +5,10 @@ schematic or an interface PCB ready for manufacture**. GPIO numbers below are
 for the original non-wireless RP2040 Raspberry Pi Pico.
 
 Printable companions: [ASCII pinout](pinout.txt) and [detailed PDF](pinout.pdf).
+The [SVG wiring overview](wiring.svg) shows the Pico and a proposed J1 adapter
+connector with the same contact numbering as the keyboard's J3. It is a wiring
+guide, not a PCB layout; J1 contact 1 is drawn at the bottom and crossings are
+not electrical junctions.
 The PDF includes all 40 Pico header positions, the 19-wire J3 harness and
 unpowered switch checks. It distinguishes the source-checked J3 mapping from
 the conditional rgbwalker adapter.
