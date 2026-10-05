@@ -1,0 +1,19 @@
+#include "keyboard.h"
+#include "hid_keys.h"
+
+/* English CPC positions -> PC usages. Host layout determines characters.
+ * X9 is dedicated to DEL on the CPC464 inline connector.
+ * Both physical Shift switches share Y3/X6 and cannot be distinguished.
+ */
+const uint8_t keymap[MATRIX_ROWS][MATRIX_COLS] = {
+    {KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_KP_9, KEY_KP_6, KEY_KP_3, KEY_KP_ENTER, KEY_KP_PERIOD, KEY_NONE},
+    {KEY_LEFT, KEY_LEFT_ALT, KEY_KP_7, KEY_KP_8, KEY_KP_5, KEY_KP_1, KEY_KP_2, KEY_KP_0, KEY_NONE},
+    {KEY_DELETE, KEY_LEFT_BRACKET, KEY_ENTER, KEY_RIGHT_BRACKET, KEY_KP_4, KEY_LEFT_SHIFT, KEY_BACKSLASH, KEY_LEFT_CTRL, KEY_NONE},
+    {KEY_EQUAL, KEY_MINUS, KEY_GRAVE, KEY_P, KEY_SEMICOLON, KEY_APOSTROPHE, KEY_SLASH, KEY_PERIOD, KEY_NONE},
+    {KEY_0, KEY_9, KEY_O, KEY_I, KEY_L, KEY_K, KEY_M, KEY_COMMA, KEY_NONE},
+    {KEY_8, KEY_7, KEY_U, KEY_Y, KEY_H, KEY_J, KEY_N, KEY_SPACE, KEY_NONE},
+    {KEY_6, KEY_5, KEY_R, KEY_T, KEY_G, KEY_F, KEY_B, KEY_V, KEY_NONE},
+    {KEY_4, KEY_3, KEY_E, KEY_W, KEY_S, KEY_D, KEY_C, KEY_X, KEY_NONE},
+    {KEY_1, KEY_2, KEY_ESCAPE, KEY_Q, KEY_TAB, KEY_A, KEY_CAPS_LOCK, KEY_Z, KEY_NONE},
+    {KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_BACKSPACE}
+};

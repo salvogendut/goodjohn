@@ -1,0 +1,47 @@
+cmake_minimum_required(VERSION 3.13)
+
+option(GOODJOHN_HOST_TESTS "Build matrix/keymap tests without the Pico SDK" OFF)
+if(GOODJOHN_HOST_TESTS)
+    project(goodjohn_tests C)
+    set(CMAKE_C_STANDARD 11)
+    enable_testing()
+    add_executable(keyboard_tests tests/keyboard_test.c src/keyboard.c src/keymap.c)
+    target_include_directories(keyboard_tests PRIVATE src)
+    target_compile_options(keyboard_tests PRIVATE -Wall -Wextra -Werror -pedantic)
+    add_test(NAME keyboard COMMAND keyboard_tests)
+    return()
+endif()
+
+if(NOT PICO_SDK_PATH AND DEFINED ENV{PICO_SDK_PATH})
+    set(PICO_SDK_PATH "$ENV{PICO_SDK_PATH}")
+endif()
+if(NOT EXISTS "${PICO_SDK_PATH}/external/pico_sdk_import.cmake")
+    message(FATAL_ERROR "Set PICO_SDK_PATH to a Pico SDK checkout (tested with 2.2.0).")
+endif()
+include("${PICO_SDK_PATH}/external/pico_sdk_import.cmake")
+project(goodjohn VERSION 0.1.0 LANGUAGES C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+pico_sdk_init()
+
+if(NOT TARGET tinyusb_device)
+    message(FATAL_ERROR "Initialize the Pico SDK lib/tinyusb submodule first.")
+endif()
+option(GOODJOHN_MATRIX_HAS_DIODES "Disable ghost suppression for a fully diode-isolated matrix" OFF)
+set(GOODJOHN_USB_VID "0xCAFE" CACHE STRING "USB vendor ID (default is for local experiments only)")
+set(GOODJOHN_USB_PID "0x4011" CACHE STRING "USB product ID (default is unallocated)")
+
+add_executable(goodjohn
+    src/main.c src/matrix.c src/keyboard.c src/keymap.c src/usb_descriptors.c)
+target_include_directories(goodjohn PRIVATE src)
+target_compile_options(goodjohn PRIVATE -Wall -Wextra)
+target_compile_definitions(goodjohn PRIVATE
+    GOODJOHN_MATRIX_HAS_DIODES=$<BOOL:${GOODJOHN_MATRIX_HAS_DIODES}>
+    GOODJOHN_USB_VID=${GOODJOHN_USB_VID}
+    GOODJOHN_USB_PID=${GOODJOHN_USB_PID})
+target_link_libraries(goodjohn PRIVATE pico_stdlib pico_unique_id tinyusb_device)
+pico_enable_stdio_usb(goodjohn 0)
+pico_enable_stdio_uart(goodjohn 0)
+pico_set_program_name(goodjohn "Goodjohn CPC keyboard")
+pico_set_program_version(goodjohn "${PROJECT_VERSION}")
+pico_add_extra_outputs(goodjohn)
