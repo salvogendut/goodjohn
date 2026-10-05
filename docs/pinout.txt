@@ -1,0 +1,172 @@
+GOODJOHN - CPC KEYBOARD TO RASPBERRY PI PICO
+Revision 1 / 2026-10-05
+============================================================================
+TARGET: Bread80 Keyswitch_CPC464_SMT, connector J3 (19 pins).
+PICO: original non-wireless RP2040 Pico / Pico H; component side up.
+STATUS: checked against PCB source and official Pico pinout; not bench tested.
+Firmware GPIO assignments: src/board_config.h.
+
+DISCONNECT the keyboard from the CPC motherboard, even with CPC power off.
+Use 19 signal wires. No keyboard VCC or GND wire is required for this matrix.
+Do not wire a matrix contact to 5 V, VBUS, VSYS, 3V3 or GND.
+Power the Pico from the PC using a USB data cable.
+
+  Passive keyboard          Raspberry Pi Pico                 PC
+  [J3: 19 contacts] -------> [GP2..GP20, as below] --- USB ---> [USB port]
+  No CPC motherboard connection.
+
+1. WIRE LIST - J3 PAD ORDER
+----------------------------------------------------------------------------
+J3 pad   Matrix net   Pico GPIO   Pico PHYSICAL pin   Function
+  01       X9            GP20             26           Sense input
+  02       Y10           GP11             15           Scan output
+  03       X1            GP12             16           Sense input
+  04       X2            GP13             17           Sense input
+  05       X3            GP14             19           Sense input
+  06       X4            GP15             20           Sense input
+  07       X5            GP16             21           Sense input
+  08       X6            GP17             22           Sense input
+  09       X7            GP18             24           Sense input
+  10       X8            GP19             25           Sense input
+  11       Y9            GP10             14           Scan output
+  12       Y8            GP9              12           Scan output
+  13       Y7            GP8              11           Scan output
+  14       Y6            GP7              10           Scan output
+  15       Y5            GP6              09           Scan output
+  16       Y4            GP5              07           Scan output
+  17       Y3            GP4              06           Scan output
+  18       Y2            GP3              05           Scan output
+  19       Y1            GP2              04           Scan output
+
+GPIO numbers and physical header pin numbers are different.
+Example: J3 pad 1 -> GP20 -> physical Pico pin 26 (NOT pin 20).
+
+J3 orientation: with keyboard keys facing you, cursor keys at upper
+right, J3 is the single vertical row at the far left. On the inspected
+PCB, pad 1 is square and at the Esc end; pad 19 is at the Caps end.
+Locate the square copper pad before fitting a cable. The solder side
+is mirrored; follow pad numbers, never an assumed cable color order.
+
+       Esc/rear end
+         [01]  square pad
+         (02)
+         (03)
+          ...
+         (19)
+       Caps/front end
+
+Leave LK1, LK2, LK3 and bonus-switch links LK4, LK5, LK6 OPEN.
+LK3 would join X8 and X9. J1/J2 use different pin orders.
+
+2. PICO TOP VIEW - USB AT TOP, COMPONENTS FACING YOU
+----------------------------------------------------------------------------
+                              USB to PC
+                           +----USB----+
+            GPIO/net/J3    |           |   GPIO/net/J3
+        GP0      unused 01 |           | 40 VBUS     unused
+        GP1      unused 02 |           | 39 VSYS     unused
+        GND      unused 03 |           | 38 GND      unused
+         GP2  Y1  J3.19 04 |           | 37 3V3_EN   unused
+         GP3  Y2  J3.18 05 |           | 36 3V3(OUT) unused
+         GP4  Y3  J3.17 06 |           | 35 ADC_VREF unused
+         GP5  Y4  J3.16 07 |           | 34 GP28     unused
+        GND      unused 08 |           | 33 AGND     unused
+         GP6  Y5  J3.15 09 |           | 32 GP27     unused
+         GP7  Y6  J3.14 10 |           | 31 GP26     unused
+         GP8  Y7  J3.13 11 |           | 30 RUN      unused
+         GP9  Y8  J3.12 12 |           | 29 GP22     unused
+        GND      unused 13 |           | 28 GND      unused
+         GP10 Y9  J3.11 14 |           | 27 GP21     unused
+         GP11 Y10 J3.02 15 |           | 26 GP20 X9  J3.01
+         GP12 X1  J3.03 16 |           | 25 GP19 X8  J3.10
+         GP13 X2  J3.04 17 |           | 24 GP18 X7  J3.09
+        GND      unused 18 |           | 23 GND      unused
+         GP14 X3  J3.05 19 |           | 22 GP17 X6  J3.08
+         GP15 X4  J3.06 20 |           | 21 GP16 X5  J3.07
+                           +-----------+
+                    SWD pads are not used.
+'unused' = leave unconnected for this keyboard harness.
+All numbers next to the board outline are PHYSICAL header pin numbers.
+
+3. BUILD AND ASSEMBLE
+----------------------------------------------------------------------------
+1) Disconnect all power. Identify the board revision and J3 pad 1.
+2) Open the links listed above. Fit Pico headers if needed.
+3) Run 19 insulated wires using the wire list. Label both cable ends.
+   Keep the prototype cable short; verify every connection with a meter.
+4) Check the switch pairs below and check for unintended adjacent shorts.
+5) Build/flash build/goodjohn.uf2, then connect Pico USB to the PC.
+   For BOOTSEL flashing, hold BOOTSEL while plugging in USB and copy
+   the UF2 to RPI-RP2. No existing CPC electronics should be attached.
+
+Bread80 SMT with every diode present and oriented correctly:
+  cmake -S . -B build -DGOODJOHN_MATRIX_HAS_DIODES=ON
+  cmake --build build --parallel
+
+Original membrane / rgbwalker / Bread80 tactile / uncertain diodes:
+  cmake -S . -B build -DGOODJOHN_MATRIX_HAS_DIODES=OFF
+  cmake --build build --parallel
+These commands reconfigure an existing build; see README.md for SDK setup.
+
+4. UNPOWERED SWITCH TESTS
+----------------------------------------------------------------------------
+Key             Matrix pair        J3 pad pair     Pico physical pair
+Cursor Up       Y1/X1              19/3            4/16
+A               Y9/X6              11/8            14/22
+Space           Y6/X8              14/10           10/25
+Either Shift    Y3/X6              17/8            6/22
+DEL             Y10/X9             2/1             15/26
+Main Enter      Y3/X3              17/5            6/19
+Keypad Enter    Y1/X7              19/9            4/24
+
+For SMT diodes, use diode mode with red probe on X and black on Y.
+Press the key: forward conduction. Release it: open. Reverse polarity
+should block on a diode board. On a plain switch board, continuity
+works in either direction. A continuity beeper alone may miss a diode.
+
+Scan current: 3.3 V pull-up -> X -> closed switch -> diode -> selected Y.
+              X ---- switch ---- |>| ---- Y
+                                  cathode toward Y
+Only the selected Y sinks low; all other Y lines float. X lines are inputs.
+The pull-ups are internal to the Pico; no external matrix supply is needed.
+
+5. FIRST USB TEST
+----------------------------------------------------------------------------
+Check every key and release, both Shift keys, Ctrl, COPY, both Enter keys
+and DEL. COPY sends Alt; DEL sends Backspace; CLR sends forward Delete.
+Set PC Num Lock for numeric keypad digits. Both Shifts share one contact.
+Test chords: diode-less matrices suppress ambiguous new keys, so some
+chords will be blocked. Do not disable that filter to cure missing keys.
+Above six regular keys, HID reports ErrorRollOver until keys are released.
+Exact shifted CPC symbols depend on the PC layout; no Fn layer yet.
+Physical tests, USB suspend current and suspend/resume remain unverified.
+
+6. RGBWALKER 20-PIN CHERRY BOARD - CONDITIONAL ADAPTER
+----------------------------------------------------------------------------
+DO NOT treat J3's table as a verified pinout for every 20-pin keyboard.
+The reference service-manual drawing suggests the same contact pairs:
+  contacts 1/2: isolated DEL switch; expected harness GP20/GP11
+  contacts 3..10: X1..X8; expected harness GP12..GP19
+  contacts 11..19: Y9..Y1; expected harness GP10..GP2
+  contact 20: leave isolated; function not verified from a board netlist.
+First confirm actual contact numbering and the switch-pair tests above
+on your PCB revision. Only then use page 1's one-to-one contact table.
+The drawing reverses names for DEL's two ends relative to Bread80.
+That is harmless for its isolated diode-less switch, but not a reason
+to assume connector orientation. Keep the diode option OFF.
+Bread80 tactile, J1/J2 membrane/modular and CPC6128 need their own
+connector mapping. An 18-wire harness needs explicit X8/X9 handling.
+
+7. SOURCES AND REGENERATION
+----------------------------------------------------------------------------
+Bread80 reference: bf4a6052888fef27ca01a6b0983791d7cb4e8af1
+https://github.com/Bread80/CPC_Keyboards/blob/bf4a6052888fef27ca01a6b0983791d7cb4e8af1/Keyswitch_CPC464_SMT/Keyboard.kicad_pcb
+rgbwalker reference: 588e61006bb606d08cc981467d7990c6e3104c42
+https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard/blob/588e61006bb606d08cc981467d7990c6e3104c42/README.md
+Pico physical header reference:
+https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf
+
+The PDF uses original vector drawings; it includes no copied PCB photos.
+Regenerate both sheets:
+  python3 -m pip install -r scripts/requirements-docs.txt
+  python3 scripts/generate_pinout.py

@@ -4,6 +4,11 @@ This is a wiring proposal checked against source files, **not a bench-validated
 schematic or an interface PCB ready for manufacture**. GPIO numbers below are
 for the original non-wireless RP2040 Raspberry Pi Pico.
 
+Printable companions: [ASCII pinout](pinout.txt) and [detailed PDF](pinout.pdf).
+The PDF includes all 40 Pico header positions, the 19-wire J3 harness and
+unpowered switch checks. It distinguishes the source-checked J3 mapping from
+the conditional rgbwalker adapter.
+
 The keyboard must be disconnected electrically from the CPC motherboard,
 including when that motherboard is powered off. This firmware drives the matrix
 and is not a passive sniffer. The Pico GPIO interface is 3.3 V; do not connect

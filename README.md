@@ -39,6 +39,13 @@ real cables, suspend current, and typing on each keyboard still need bench tests
 Start with [the wiring notes](docs/wiring.md). Connector families are not
 interchangeable just because the logical CPC matrix is the same.
 
+For the workbench, use the [ASCII pinout sheet](docs/pinout.txt) or the
+[four-page printable PDF](docs/pinout.pdf). These include the Bread80 J3 wire
+list, a full Pico header diagram, assembly steps and continuity checks, plus
+conditional guidance for the rgbwalker connector. Regenerate both with
+`python3 scripts/generate_pinout.py` after installing
+`scripts/requirements-docs.txt` in a Python virtual environment.
+
 ## Build
 
 Prerequisites: CMake, Make or Ninja, Python 3, an Arm bare-metal GCC toolchain
