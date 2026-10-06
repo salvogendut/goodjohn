@@ -19,12 +19,13 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-REVISION = "Revision 1 / 2026-10-05"
+REVISION = "Revision 2 / 2026-10-06"
 BREAD_REV = "bf4a6052888fef27ca01a6b0983791d7cb4e8af1"
 CHERRY_REV = "588e61006bb606d08cc981467d7990c6e3104c42"
 PICO_SOURCE = "https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf"
 BREAD_SOURCE = f"https://github.com/Bread80/CPC_Keyboards/blob/{BREAD_REV}/Keyswitch_CPC464_SMT/Keyboard.kicad_pcb"
 CHERRY_SOURCE = f"https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard/blob/{CHERRY_REV}/README.md"
+CHERRY_GERBER = f"https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard/blob/{CHERRY_REV}/_GERBER_V1.2_/Gerber_Amstrad_Teclado_09_PCB_Amstrad_Teclado_10_THT_Con_03_2025-03-02.zip"
 
 # Physical Pico pins in increasing order, component side up, USB at the top.
 PICO_LABELS = [
@@ -77,7 +78,8 @@ def generate_ascii():
         "=" * 76,
         "TARGET: Bread80 Keyswitch_CPC464_SMT, connector J3 (19 pins).",
         "PICO: original non-wireless RP2040 Pico / Pico H; component side up.",
-        "STATUS: checked against PCB source and official Pico pinout; not bench tested.",
+        "STATUS: source-checked; full keyboard validation pending.",
+        "rgbwalker V1.2: direct two-wire test of top-row 1 passed; see section 6.",
         "Firmware GPIO assignments: src/board_config.h.", "",
         "DISCONNECT the keyboard from the CPC motherboard, even with CPC power off.",
         "Use 19 signal wires. No keyboard VCC or GND wire is required for this matrix.",
@@ -128,6 +130,7 @@ def generate_ascii():
               "  cmake --build build --parallel",
               "These commands reconfigure an existing build; see README.md for SDK setup.", "",
               "4. UNPOWERED SWITCH TESTS", "-" * 76,
+              "Disconnect the keyboard from both Pico and CPC for these switch tests.",
               "Key             Matrix pair        J3 pad pair     Pico physical pair"]
     for key, row, col in CHECKS:
         a, b = BY_NET[row], BY_NET[col]
@@ -148,24 +151,38 @@ def generate_ascii():
               "chords will be blocked. Do not disable that filter to cure missing keys.",
               "Above six regular keys, HID reports ErrorRollOver until keys are released.",
               "Exact shifted CPC symbols depend on the PC layout; no Fn layer yet.",
-              "Physical tests, USB suspend current and suspend/resume remain unverified.", "",
-              "6. RGBWALKER 20-PIN CHERRY BOARD - CONDITIONAL ADAPTER", "-" * 76,
+              "Full keyboard, USB suspend current and suspend/resume remain unverified.", "",
+              "6. RGBWALKER V1.2 - CONNECTOR AND DIRECT-WIRE BRING-UP", "-" * 76,
               "DO NOT treat J3's table as a verified pinout for every 20-pin keyboard.",
-              "The reference service-manual drawing suggests the same contact pairs:",
+              "V1.2 Gerbers: CP002_THT and CP002_SMD contacts 1..19 match each other.",
+              "Count square pad as 1 at the Esc end, downward toward Shift.",
               "  contacts 1/2: isolated DEL switch; expected harness GP20/GP11",
               "  contacts 3..10: X1..X8; expected harness GP12..GP19",
               "  contacts 11..19: Y9..Y1; expected harness GP10..GP2",
-              "  contact 20: leave isolated; function not verified from a board netlist.",
-              "First confirm actual contact numbering and the switch-pair tests above",
-              "on your PCB revision. Only then use page 1's one-to-one contact table.",
-              "The drawing reverses names for DEL's two ends relative to Bread80.",
-              "That is harmless for its isolated diode-less switch, but not a reason",
-              "to assume connector orientation. Keep the diode option OFF.",
+              "  contact 20: isolated from the matrix in this revision; leave disconnected.",
+              "With Pico disconnected, switch pairs are: 1 = 3/11, 2 = 4/11, Esc = 5/11.",
+              "The service drawing reverses the two DEL wire names relative to Bread80;",
+              "that does not affect the isolated diode-less DEL switch. Keep diodes OFF.", "",
+              "Unplug USB before each wiring change or meter check. Start directly:",
+              "  keyboard 3  -> Pico PHYSICAL 16 (GP12)",
+              "  keyboard 11 -> Pico PHYSICAL 14 (GP10)",
+              "Each pad-to-pad wire path must beep WITHOUT pressing a key. Then power",
+              "by USB and press top-row 1. This direct test passed on 2026-10-06.",
+              "Bypassing the previous ribbon/jumper assembly restored 1; its exact",
+              "fault has not been identified. Other keys and chords still need testing.",
+              "Next add keyboard 4 -> Pico 17 (GP13) for 2, then 5 -> Pico 19 (GP14)",
+              "for Esc. Check each wire before USB power. Esc prints no character.",
+              "Complete contacts 1..19 using section 1; keep contact 20 disconnected.",
+              "Before reusing an adapter, map and label every wire with a meter.",
+              "For switch-pair identification, disconnect the keyboard from the Pico:",
+              "an unpowered Pico can still provide other paths through its circuitry.",
+              "Full procedure and test status: docs/wiring.md.", "",
               "Bread80 tactile, J1/J2 membrane/modular and CPC6128 need their own",
               "connector mapping. An 18-wire harness needs explicit X8/X9 handling.", "",
               "7. SOURCES AND REGENERATION", "-" * 76,
               f"Bread80 reference: {BREAD_REV}", BREAD_SOURCE,
               f"rgbwalker reference: {CHERRY_REV}", CHERRY_SOURCE,
+              "rgbwalker V1.2 fabrication archive:", CHERRY_GERBER,
               "Pico physical header reference:", PICO_SOURCE, "",
               "The PDF uses original vector drawings; it includes no copied PCB photos.",
               "Regenerate both sheets:",
@@ -256,7 +273,7 @@ class Sheet:
         c.line(MARGIN, 36, PAGE_W - MARGIN, 36)
         c.setFillColor(MUTED)
         c.setFont("Helvetica", 8)
-        c.drawString(MARGIN, 23, REVISION + "  |  Source-checked; not bench-tested")
+        c.drawString(MARGIN, 23, REVISION + "  |  Full keyboard validation pending")
         c.drawRightString(PAGE_W - MARGIN, 23, f"{self.page} / 4")
         return PAGE_H - 113
 
@@ -289,7 +306,7 @@ class Sheet:
         y = self.heading("Identify J3 before wiring", y)
         y = self.paragraph("With keys facing you and cursor keys at upper right, J3 is the single vertical row at the keyboard's far left. On the inspected PCB, <b>pad 1 is square at the Esc end</b>; pad 19 is at the Caps end. The solder-side view is mirrored.", y)
         y = self.paragraph("Leave <b>LK1, LK2, LK3 and LK4-LK6 open</b> for this prototype. LK3 joins X8/X9; the last three links serve the unused bonus keys. <b>J1 and J2 have different pin orders.</b>", y)
-        self.paragraph("J3 nets: Bread80 PCB revision " + BREAD_REV[:12] + ". Firmware pin assignments: src/board_config.h. See page 4 for the conditional rgbwalker adapter and source links.", y, 8.5, MUTED)
+        self.paragraph("J3 nets: Bread80 PCB revision " + BREAD_REV[:12] + ". Firmware pin assignments: src/board_config.h. See page 4 for rgbwalker V1.2 checks and the first hardware test.", y, 8.5, MUTED)
 
     def pico_view(self):
         y = self.begin("Pico header orientation", "Top view: components and BOOTSEL button facing you, USB connector at the top. Not to scale.")
@@ -354,7 +371,7 @@ class Sheet:
         for text in [
             "<b>1. Prepare:</b> identify the exact board and J3 pad 1. Open LK1-LK6. Fit Pico headers if needed. Use insulated wires or a labeled breakout harness; keep the first cable short.",
             "<b>2. Wire:</b> follow page 1 one contact at a time. Check every cable endpoint and look for unintended adjacent shorts. Do not rely on ribbon-wire colors or a mirrored photograph.",
-            "<b>3. Test contacts:</b> with all power disconnected, check the pairs below. On a diode board, place the red meter probe on X and black on Y, using diode mode.",
+            "<b>3. Test contacts:</b> disconnect the keyboard from both Pico and CPC; check the pairs below. On a diode board, place the red meter probe on X and black on Y, using diode mode.",
         ]:
             y = self.paragraph(text, y)
         rows = [["Key held", "Y / X nets", "J3 pads", "Pico header pins"]]
@@ -372,30 +389,31 @@ class Sheet:
         y = self.heading("Flash, then test on the PC", y)
         y = self.paragraph("Hold BOOTSEL while connecting the Pico, then copy <b>build/goodjohn.uf2</b> to RPI-RP2. Use a USB data cable. Check every key and release, modifiers, DEL and both Enter keys. COPY sends Alt; DEL sends Backspace; CLR sends forward Delete. Set the PC's Num Lock for keypad digits.", y, 9.5)
         y = self.paragraph("If one group of keys fails, recheck its X/Y wire and diode orientation. If only chords fail on a board without diodes, ghost suppression may be blocking ambiguity. More than six regular keys produces HID ErrorRollOver. Shifted symbols follow the PC layout; there is no Fn layer yet.", y, 9.5)
-        self.paragraph("Bench verification is still required. USB enumeration, cable settling, suspend current and suspend/resume have not been physically validated. No USB remote wakeup or low-power suspend implementation is provided yet.", y, 8.5, MUTED)
+        self.paragraph("Full keyboard, cable settling, suspend current and suspend/resume still need bench tests. One directly wired key on rgbwalker V1.2 has typed correctly over USB; see page 4. No USB remote wakeup or low-power suspend implementation is provided yet.", y, 8.5, MUTED)
 
     def variants(self):
         y = self.begin("Other boards and source notes", "The logical CPC key matrix is shared; connector order and jumper routing are not universal.")
-        y = self.banner("<b>rgbwalker Cherry: conditional wiring only.</b> The table on page 1 is source-checked for Bread80 J3. Do not apply it to an arbitrary 20-pin CPC connector without identifying its contacts.", y)
-        y = self.paragraph("The rgbwalker repository's service-manual drawing suggests the following contact groups. It is not a PCB netlist for every released revision. Verify actual contact numbering, orientation and the page 3 switch-pair tests before building this adapter.", y)
+        y = self.banner("<b>rgbwalker V1.2: first key test passed.</b> On 2026-10-06, top-row <b>1</b> typed <b>1</b> with two direct wires. The full keyboard remains unverified.", y)
+        y = self.paragraph("V1.2 Gerbers connect CP002_THT and CP002_SMD contacts 1-19 in the same order; contact 20 is isolated from the matrix. Count the <b>square pad as 1 at the Esc end</b>, toward Shift. Check other revisions separately.", y, 9.5)
         rows = [
             ["Expected contact(s)", "Expected switch lines", "Pico harness, if confirmed"],
             ["1 and 2", "Isolated DEL switch", "GP20 and GP11"],
             ["3 through 10", "X1 through X8", "GP12 through GP19"],
             ["11 through 19", "Y9 through Y1", "GP10 down through GP2"],
-            ["20", "Function not verified", "Leave isolated"],
+            ["20", "No matrix connection (V1.2)", "Leave isolated"],
         ]
         y = self.table(rows, [137, 164, WIDTH - 301], y, 24, 9)
-        y = self.paragraph("<b>Only after those checks:</b> use page 1's contact-to-Pico table for contacts 1-19 and leave contact 20 isolated. Keep <b>GOODJOHN_MATRIX_HAS_DIODES=OFF</b>. The drawing reverses the two DEL wire names relative to Bread80; that does not affect an isolated switch without a diode.", y)
+        y = self.paragraph("<b>Start directly:</b> keyboard <b>3 to Pico physical 16 (GP12)</b>; keyboard <b>11 to physical 14 (GP10)</b>. With USB unplugged, each wire must beep pad-to-pad without a key held. Connect USB: top-row 1 should type 1. Bypassing the earlier ribbon/jumper assembly restored this; its exact fault is unresolved.", y, 9.5)
+        y = self.paragraph("Unplug USB, then add <b>4 to physical 17 (GP13)</b> for 2; next <b>5 to physical 19 (GP14)</b> for Esc. Check each wire before power. Esc prints no character. Complete contacts 1-19 using page 1, leave 20 disconnected, and keep <b>GOODJOHN_MATRIX_HAS_DIODES=OFF</b>. Details: docs/wiring.md.", y, 9.5)
         y = self.heading("Bread80 alternatives", y)
         y = self.paragraph("<b>J1 membrane / J2 modular:</b> different pad orders, with routing affected by links. This sheet does not map those connectors. <b>Tactile board:</b> same X/Y scheme but different connector references and no diodes. <b>CPC6128 SMT:</b> upstream marks it as a design-stage board; it is not a validated adapter target.", y)
-        y = self.paragraph("An 18-wire adaptation must handle the shared X8/X9 sense net explicitly. Simply omitting X9 from this firmware loses DEL. Use the 19-wire J3 harness for the first documented prototype.", y)
+        y = self.paragraph("An 18-wire adaptation must handle the shared X8/X9 net explicitly; simply omitting X9 loses DEL.", y, 9.5)
         y = self.heading("Source records", y)
         references = [
             ("Bread80 CPC464 SMT KiCad PCB", BREAD_SOURCE,
              f"Revision {BREAD_REV}. J3 pad nets, square pad 1, connector placement, diode cathodes and switch coordinates were inspected."),
-            ("rgbwalker Cherry keyboard documentation", CHERRY_SOURCE,
-             f"Revision {CHERRY_REV}. README and service-manual matrix image establish the expected contact groups; board continuity is still required."),
+            ("rgbwalker V1.2 fabrication archive", CHERRY_GERBER,
+             f"Revision {CHERRY_REV}. Copper/plated-hole tracing checks THT/SMD correspondence, unused contact 20, and switch pairs: 1 = 3/11, 2 = 4/11, Esc = 5/11."),
             ("Raspberry Pi official Pico pinout", PICO_SOURCE,
              "Pico-R3-A4-Pinout.pdf. Used to check the 40 physical header positions and power/ground labels. Target is the original non-wireless RP2040 Pico/Pico H."),
         ]

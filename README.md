@@ -30,15 +30,22 @@ continue to work. This cannot recover arbitrary chords or detect a release that
 is electrically hidden by other held keys. Fully diode-isolated boards can turn
 the filter off at build time.
 
-**Status: compiled and tested on the development host, not tested on a physical
-Pico/keyboard.** There is no interface PCB design yet. USB enumeration, timing on
-real cables, suspend current, and typing on each keyboard still need bench tests.
+**Status: host tests pass; the first physical key test passed on rgbwalker
+V1.2 (2026-10-06).** With keyboard contact 3 connected directly to Pico physical
+pin 16 (GP12), and contact 11 to pin 14 (GP10), the top-row `1` key types `1`
+over USB. Bypassing the previous ribbon/jumper assembly restored this operation;
+the exact fault in that assembly has not been identified. Follow the
+[staged wiring checks](docs/wiring.md#staged-bring-up-for-rgbwalker-v12)
+before reconnecting the full harness.
+
+Full-keyboard operation, chords, cable timing, and USB suspend/resume and current
+still need bench tests. There is no interface PCB design yet.
 
 ## Keyboard projects
 
 | Project | Initial integration |
 | --- | --- |
-| [rgbwalker's CPC464 Cherry keyboard](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard) | Passive switches, inline connector; retain ghost suppression. Physical connector orientation and revision must be checked before wiring. |
+| [rgbwalker's CPC464 Cherry keyboard](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard) | V1.2 connector routing inspected; direct two-wire test of top-row `1` passed. Full-keyboard validation pending; retain ghost suppression. |
 | [Bread80 CPC464 SMT mechanical keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC464_SMT) | J3 pin map traced from the local KiCad PCB; per-key diodes allow disabling ghost suppression. |
 | [Bread80 tactile keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Tactile) | Same CPC key arrangement, no diodes; connector adapter still needs checking. |
 | [Bread80 CPC6128 SMT keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC6128_SMT) | Upstream describes this as a design-stage board; not a validated adapter target. |
@@ -49,8 +56,8 @@ interchangeable just because the logical CPC matrix is the same.
 For the workbench, use the [ASCII pinout sheet](docs/pinout.txt) or the
 [four-page printable PDF](docs/pinout.pdf). These include the Bread80 J3 wire
 list, a full Pico header diagram, assembly steps and continuity checks, plus
-conditional guidance for the rgbwalker connector. Regenerate both with
-`python3 scripts/generate_pinout.py` after installing
+V1.2 connector orientation and a direct two-wire test for rgbwalker. Regenerate
+both with `python3 scripts/generate_pinout.py` after installing
 `scripts/requirements-docs.txt` in a Python virtual environment.
 Regenerate the README's [SVG wiring diagram](docs/wiring.svg) with
 `python3 scripts/generate_wiring_svg.py` in the same environment. It reuses the

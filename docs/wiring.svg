@@ -1546,5 +1546,5 @@
   <text x="544" y="1056" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#526572" font-weight="400" text-anchor="start">Crossing wires are not joined. Unmarked Pico pins are unused.</text>
   <text x="49" y="1086" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#243847" font-weight="700" text-anchor="start">Disconnect the CPC motherboard. No keyboard power or ground wire; USB supplies the Pico.</text>
   <text x="49" y="1113" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#526572" font-weight="400" text-anchor="start">Contact order checked against Bread80 CPC464 SMT J3; verify original/other keyboard revisions before wiring.</text>
-  <text x="49" y="1140" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#526572" font-weight="400" text-anchor="start">Source-checked, not bench-tested. Pico artwork adapted from the supplied pico-pinout.svg. Details: docs/pinout.pdf</text>
+  <text x="49" y="1140" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#526572" font-weight="400" text-anchor="start">Full keyboard validation pending. Pico artwork adapted from the supplied pico-pinout.svg. Details: docs/pinout.pdf</text>
 </svg>

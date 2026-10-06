@@ -148,7 +148,7 @@ def generate(root_path, wires):
     label(544, 1056, "Crossing wires are not joined. Unmarked Pico pins are unused.", 16, "#526572")
     label(49, 1086, "Disconnect the CPC motherboard. No keyboard power or ground wire; USB supplies the Pico.", 17, weight="700")
     label(49, 1113, "Contact order checked against Bread80 CPC464 SMT J3; verify original/other keyboard revisions before wiring.", 15, "#526572")
-    label(49, 1140, "Source-checked, not bench-tested. Pico artwork adapted from the supplied pico-pinout.svg. Details: docs/pinout.pdf", 13, "#526572")
+    label(49, 1140, "Full keyboard validation pending. Pico artwork adapted from the supplied pico-pinout.svg. Details: docs/pinout.pdf", 13, "#526572")
 
     ET.indent(svg, space="  ")
     path = root_path / "docs/wiring.svg"

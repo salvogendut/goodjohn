@@ -2,7 +2,9 @@
 
 This is a wiring proposal checked against source files, **not a bench-validated
 schematic or an interface PCB ready for manufacture**. GPIO numbers below are
-for the original non-wireless RP2040 Raspberry Pi Pico.
+for the original non-wireless RP2040 Raspberry Pi Pico. A direct two-wire test
+of the top-row `1` key on rgbwalker V1.2 passed on 2026-10-06; the full keyboard
+has not yet been validated.
 
 Printable companions: [ASCII pinout](pinout.txt) and [detailed PDF](pinout.pdf).
 The [SVG wiring overview](wiring.svg) shows the Pico and a proposed J1 adapter
@@ -11,7 +13,7 @@ guide, not a PCB layout; J1 contact 1 is drawn at the bottom and crossings are
 not electrical junctions.
 The PDF includes all 40 Pico header positions, the 19-wire J3 harness and
 unpowered switch checks. It distinguishes the source-checked J3 mapping from
-the conditional rgbwalker adapter.
+the rgbwalker V1.2 connector checks and initial hardware test.
 
 The keyboard must be disconnected electrically from the CPC motherboard,
 including when that motherboard is powered off. This firmware drives the matrix
@@ -92,11 +94,57 @@ Its labels for the two DEL wires are reversed relative to Bread80's PCB net
 names. With an isolated switch and no diode that reversal does not affect DEL,
 but it demonstrates why these names must not be treated as a universal pinout.
 
-Before using this board, verify the actual Gerber revision and connector
-orientation, confirm the otherwise-unused twentieth contact, and continuity-test
-the mapping against the keys below. Do not connect a presumed spare contact to
-power or ground. The firmware's physical map can be used once those checks
-establish the same switch pairs; a tested connector adapter remains to be made.
+For **V1.2**, the inspected fabrication archive is
+`_GERBER_V1.2_/Gerber_Amstrad_Teclado_09_PCB_Amstrad_Teclado_10_THT_Con_03_2025-03-02.zip`
+at the revision above. Tracing its top/bottom copper and plated holes establishes:
+
+- CP002_THT and CP002_SMD contacts 1 through 19 connect to the same respective
+  nets. Contact 20 on each footprint is isolated from the switch matrix.
+- With the keys facing you, count from the **square pad at the Esc end as 1**,
+  toward Shift. Count contacts 1 and 2 even though they serve only DEL.
+- Esc closes contacts **5/11**, top-row `1` closes **3/11**, top-row `2` closes
+  **4/11**, and DEL closes **1/2**. The first three pairs also match the firmware
+  mapping derived from Bread80 J3.
+
+Use the contact numbers in the 19-wire table for this V1.2 prototype, leaving
+contact 20 disconnected. The adapter J1 shown in the SVG is drawn with contact 1
+at the bottom; that is not the orientation of the keyboard header. Verify the
+actual pads and cable endpoints, rather than inferring them from cable colors.
+Other PCB revisions still need their own connector checks.
+
+### Staged bring-up for rgbwalker V1.2
+
+Unplug USB before each wiring change or meter check. Keep the keyboard isolated
+from the CPC motherboard. Use direct individual jumpers for these initial tests.
+
+1. **Start with two wires:** keyboard contact 3 to Pico physical pin 16 (GP12),
+   and keyboard contact 11 to Pico physical pin 14 (GP10). With no key pressed,
+   check each wire from the keyboard solder pad to its intended Pico solder pad:
+   each should read close to zero ohms / beep continuously. Connect USB and press
+   top-row `1`; it should type `1`. This step passed on the user's V1.2 hardware.
+2. **Add `2`:** keyboard contact 4 to Pico physical pin 17 (GP13). Check the new
+   wire with USB unplugged, then reconnect USB. Top-row `1` and `2` should each
+   type their own digit.
+3. **Add Esc:** keyboard contact 5 to Pico physical pin 19 (GP14). After checking
+   its wire, verify Esc in a keyboard event viewer or an application with a known
+   Esc action. Esc does not print a character.
+4. **Complete the harness:** add the remaining connections from the wire list,
+   checking each pad-to-pad connection before powering up. Test every key
+   individually before modifiers and chords. Keep contact 20 disconnected.
+
+The original ribbon/jumper assembly produced incorrect characters and failed
+the intended end-to-end wire checks. Bypassing it with the two direct wires
+restored `1`. This implicates the assembly or its connections, but does not
+establish which connector, contact or wire was wrong. Do not shift the entire
+harness or change the keymap on that evidence alone.
+
+To reuse a ribbon or adapter, disconnect it from the Pico and map each keyboard
+pad to its actual cable endpoint with the meter. Label those endpoints before
+connecting them to the Pico. Each wire must conduct without any key held.
+For a **switch** continuity test, disconnect the keyboard from the Pico entirely:
+the expected pair should conduct only while that key is pressed. An unpowered
+Pico can provide other meter paths through its circuitry, so its attached GPIOs
+are not a reliable way to identify an unknown switch pair.
 
 ## Other CPC connectors
 
@@ -112,10 +160,13 @@ compatibility or physical fit is assumed for it.
 
 ## Continuity and first-power checks
 
-With all power disconnected, test these representative switch paths:
+With the keyboard disconnected from both Pico and CPC, test these representative
+switch paths:
 
 | Key | Expected matrix path | Bread80 J3 pads |
 | --- | --- | --- |
+| Top-row 1 | Y9 / X1 | 11 / 3 |
+| Esc | Y9 / X3 | 11 / 5 |
 | Cursor Up | Y1 / X1 | 19 / 3 |
 | A | Y9 / X6 | 11 / 8 |
 | Space | Y6 / X8 | 14 / 10 |
@@ -140,4 +191,5 @@ does not provide a USB-compliant low-power suspend implementation or remote wake
 - [Bread80 CPC464 PCB at the inspected revision](https://github.com/Bread80/CPC_Keyboards/blob/bf4a6052888fef27ca01a6b0983791d7cb4e8af1/Keyswitch_CPC464_SMT/Keyboard.kicad_pcb): connector nets, diode orientation and switch coordinates.
 - [Bread80 documentation at the inspected revision](https://github.com/Bread80/CPC_Keyboards/blob/bf4a6052888fef27ca01a6b0983791d7cb4e8af1/README.md): shared logical matrices and board maturity.
 - [rgbwalker documentation at the inspected revision](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard/blob/588e61006bb606d08cc981467d7990c6e3104c42/README.md): switch type, connector family and service-manual drawing.
+- [rgbwalker V1.2 fabrication archive](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard/blob/588e61006bb606d08cc981467d7990c6e3104c42/_GERBER_V1.2_/Gerber_Amstrad_Teclado_09_PCB_Amstrad_Teclado_10_THT_Con_03_2025-03-02.zip): THT/SMD contact correspondence, isolated contact 20 and the switch pairs recorded above.
 - [Raspberry Pi Pico documentation](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html): Pico hardware and header pinout.
