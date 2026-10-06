@@ -1,0 +1,9 @@
+Reference,Quantity,Item,Specification,Notes
+PCB,1,Goodjohn carrier v1,80 x 66 mm; 2 layers; 1.6mm FR4; 1oz copper,Unbuilt prototype
+U1,1,Raspberry Pi Pico / Pico H,Original RP2040; male headers pointing down,USB faces upper edge
+U1 sockets,2,Female header 1x20,2.54mm pitch; 17.78mm row spacing; nominal 8.5mm body height,Match chosen male headers; sockets fitted to carrier
+J1,1,Male header 1x19,2.54mm pitch; vertical; 0.64mm square posts,Optional for ribbon-only build
+J2 J3,2,Male header 1x10,2.54mm pitch; vertical; 0.64mm square posts,Optional for inline-only build
+H1-H4,4,M3 standoff/screw sets,3.2mm NPTH; head/washer envelope <=7mm,Optional; protect underside from metalwork
+USB cable,1,USB data cable,PC host to Pico Micro-USB,Power and data on one cable
+Keyboard harness,1,Mating 2.54mm harness,Inline 19 OR separate A/B 10-way cables,Verify every contact; bare membrane tails need adapter

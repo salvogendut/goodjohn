@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "PTH_hits": 92,
+  "NPTH_hits": 4,
+  "drill_coordinates_and_diameters": "match final PCB",
+  "outline_mm": [
+    80,
+    66
+  ],
+  "layers": 2,
+  "thickness_mm": 1.6
+}

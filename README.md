@@ -1,8 +1,8 @@
 # Goodjohn
 
 Goodjohn is a Raspberry Pi Pico interface for using an Amstrad CPC keyboard as
-a USB keyboard on a PC. This repository holds the firmware and the wiring basis
-for a future interface PCB.
+a USB keyboard on a PC. This repository holds the firmware, wiring guides and
+a prototype Pico carrier PCB.
 
 > [!WARNING]
 > **USB keyboard use only.** Physically disconnect the keyboard from the CPC
@@ -51,8 +51,28 @@ firmware and pin map. The exact fault in that earlier assembly is still unknown.
 See the [staged wiring checks and test record](docs/wiring.md#staged-bring-up-for-rgbwalker-v12).
 
 The remaining individual keys, modifiers, chords, cable timing, and USB
-suspend/resume and current still need recorded bench tests. There is no
-interface PCB design yet.
+suspend/resume and current still need recorded bench tests. The carrier PCB
+below is designed and checked, but has not been manufactured or bench-tested.
+
+## Pico carrier PCB prototype
+
+The [v1 carrier](hardware/pico-carrier-v1/README.md) is an **80 × 66 mm, two-layer
+board** with a socketed RP2040 Pico, the inline 19-pin connector and separate
+10-pin ribbon A/B headers. Use one keyboard through **J1 OR J2 + J3**. It keeps
+the tested firmware pin map and powers the Pico through its existing USB port.
+
+[![KiCad render of the Goodjohn Pico carrier prototype](hardware/pico-carrier-v1/docs/carrier-3d.png)](hardware/pico-carrier-v1/README.md)
+
+The [KiCad project](hardware/pico-carrier-v1/goodjohn-carrier.kicad_pro),
+[schematic PDF](hardware/pico-carrier-v1/docs/schematic.pdf),
+[assembly guide](hardware/pico-carrier-v1/docs/assembly.pdf),
+[BOM](hardware/pico-carrier-v1/bom.csv) and
+[Gerber/drill ZIP](hardware/pico-carrier-v1/fabrication/goodjohn-carrier-v1-gerbers.zip)
+are included. ERC, DRC and schematic/PCB parity checks pass; an independent
+pin-map check matches all 19 signals to the firmware and existing wiring SVGs.
+**This is an unbuilt prototype, and the CPC motherboard must remain physically
+disconnected.** The carrier headers accept 2.54 mm mating harnesses; bare
+membrane tails need an appropriate connector adapter.
 
 ## Keyboard projects
 

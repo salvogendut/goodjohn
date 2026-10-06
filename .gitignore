@@ -3,3 +3,9 @@
 *.elf
 *.bin
 __pycache__/
+*.kicad_prl
+*.kicad_pcb.lck
+*.kicad_sch.lck
+~*.lck
+*-backups/
+/hardware/pico-carrier-v1/checks/routing-input.kicad_pcb

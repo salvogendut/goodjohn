@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "matrix_nets": 19,
+  "matrix_pads_checked": 57,
+  "ground_pads_checked": 7,
+  "ribbon_A10": "isolated",
+  "ribbon_B10": "Y1",
+  "erc_violations": 0,
+  "drc_violations": 0,
+  "unconnected_items": 0,
+  "schematic_parity_issues": 0,
+  "vias": 13,
+  "sources": [
+    "src/board_config.h",
+    "docs/wiring.svg",
+    "docs/wiring-dual-ribbon.svg"
+  ],
+  "sha256": {
+    "hardware/pico-carrier-v1/goodjohn-carrier.kicad_sch": "fcebeebd82a201a29df2c738b36d024bef4b1714ed4f1f4a319de169d7282c0b",
+    "hardware/pico-carrier-v1/goodjohn-carrier.kicad_pcb": "59276b1d67ff3658dbfebba0a258fd98bb76beeb0856efbec9b1af7de8bd8516",
+    "hardware/pico-carrier-v1/goodjohn-carrier.kicad_pro": "9ef962a2b4f2232eb0bc1fc6dd31201e19c71b613c7e02fe9984fb9c4d119806"
+  },
+  "hardware_status": "Unbuilt prototype; bench validation pending"
+}
