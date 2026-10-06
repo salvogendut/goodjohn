@@ -77,7 +77,11 @@ the first bring-up. There is no matrix ground or power pin in this J3 table.
 
 The source PCB gives J1 (membrane) and J2 (modular) different pin orders from
 J3, and their routing depends on the links. Do not apply this J3 table to them.
-Their adapter profiles have not yet been implemented.
+For J1 configured as a CPC464, use the separate
+[two-ribbon wiring scheme](wiring-dual-ribbon.md), [SVG](wiring-dual-ribbon.svg),
+[ASCII pinout](pinout-dual-ribbon.txt) or [PDF](pinout-dual-ribbon.pdf).
+That harness requires LK1 pads 1-2 and LK2 bridged, with LK3 open. J2 modular
+and CPC6128 connector adaptations are not yet documented for the Pico.
 
 ## rgbwalker Cherry keyboard
 

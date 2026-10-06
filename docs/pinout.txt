@@ -1,5 +1,5 @@
 GOODJOHN - CPC KEYBOARD TO RASPBERRY PI PICO
-Revision 3 / 2026-10-06
+Revision 4 / 2026-10-06
 ============================================================================
 TARGET: Bread80 Keyswitch_CPC464_SMT, connector J3 (19 pins).
 PICO: original non-wireless RP2040 Pico / Pico H; component side up.
@@ -176,7 +176,8 @@ For switch-pair identification, disconnect the keyboard from the Pico:
 an unpowered Pico can still provide other paths through its circuitry.
 Full procedure and test status: docs/wiring.md.
 
-Bread80 tactile, J1/J2 membrane/modular and CPC6128 need their own
+Bread80 J1, CPC464 links: see docs/pinout-dual-ribbon.txt and .pdf.
+Bread80 tactile, J2 modular and CPC6128 need their own
 connector mapping. An 18-wire harness needs explicit X8/X9 handling.
 
 7. SOURCES AND REGENERATION

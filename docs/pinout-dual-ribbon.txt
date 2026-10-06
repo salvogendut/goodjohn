@@ -1,0 +1,83 @@
+GOODJOHN - BREAD80 CPC464 SMT J1 / TWO 10-PIN RIBBONS
+Revision 1 / 2026-10-06
+SOURCE-CHECKED; NOT BENCH-TESTED. CPC464 CONFIGURATION ONLY.
+
+USB unplugged for wiring. Keyboard disconnected from CPC motherboard.
+LK1: bridge 1-2 only. LK2: bridge 1-2. LK3 and LK4-LK6: OPEN.
+19 signal wires; no keyboard power or ground wire. Pico USB goes to PC.
+
+       KEYBOARD COMPONENT SIDE / KEYS FACING YOU
+                    Rear / Esc end
+
+           Ribbon B             Ribbon A
+              B1 ( 2)          [ 1] A1  square pad
+              B2 ( 4)          ( 3) A2
+              B3 ( 6)          ( 5) A3
+              B4 ( 8)          ( 7) A4
+              B5 (10)          ( 9) A5
+              B6 (12)          (11) A6
+              B7 (14)          (13) A7
+              B8 (16)          (15) A8
+              B9 (18)          (17) A9
+             B10 (20)          (19) A10 -- no connection
+
+                    Space-bar end
+       Parenthesized numbers are Bread80 J1 PCB pad numbers.
+
+A/B are guide labels. A = odd J1 pads; B = even J1 pads.
+J1 pad 19 (A10) is unused. J1 pad 20 (B10) MUST be wired.
+
+Ribbon   J1 pad   Net    Pico GPIO   Pico PHYSICAL pin
+------------------------------------------------------------------------
+A1       1        Y10    GP11        15
+A2       3        X1     GP12        16
+A3       5        X2     GP13        17
+A4       7        X3     GP14        19
+A5       9        X4     GP15        20
+A6       11       X5     GP16        21
+A7       13       X6     GP17        22
+A8       15       X7     GP18        24
+A9       17       X9     GP20        26
+A10      19       NC     --          Leave disconnected
+B1       2        X8     GP19        25
+B2       4        Y9     GP10        14
+B3       6        Y8     GP9         12
+B4       8        Y7     GP8         11
+B5       10       Y6     GP7         10
+B6       12       Y5     GP6         9
+B7       14       Y4     GP5         7
+B8       16       Y3     GP4         6
+B9       18       Y2     GP3         5
+B10      20       Y1     GP2         4
+
+Link checks, no keys held: J1.1 -> J3.2 (Y10); J1.2 -> J3.10 (X8).
+Both must conduct. LK3 must not short J3.10 (X8) to J3.1 (X9).
+
+Start with A2/J1.3 -> Pico16 and B2/J1.4 -> Pico14; top-row 1 types 1.
+Unplug USB between changes. Add A3/J1.5 -> Pico17 for 2;
+A4/J1.7 -> Pico19 for Esc; then complete the harness above.
+Existing firmware GPIO/keymap applies. Diode option ON only after
+all switch diodes and their orientation have been verified.
+
+SWITCH CHECKS: detach keyboard from Pico; red on X, black on Y.
+Use diode mode on the SMT board. Pressed: conducts; released: open.
+Key                Ribbon X/Y   J1 pads X/Y   Pico physical X/Y
+Top-row 1          A2 / B2      3 / 4         16 / 14
+Top-row 2          A3 / B2      5 / 4         17 / 14
+Esc                A4 / B2      7 / 4         19 / 14
+Space              B1 / B5      2 / 10        25 / 10
+Either Shift       A7 / B8      13 / 16       22 / 6
+DEL (Backspace)    A9 / A1      17 / 1        26 / 15
+Main Enter         A4 / B8      7 / 16        19 / 6
+Cursor Up          A2 / B10     3 / 20        16 / 4
+
+Do not apply to CPC6128 settings, J2 modular, Tactile J2/J3, or an
+unverified original membrane tail. The original 19-pin SVG's adapter
+J1 and this KEYBOARD J1 are different connector references.
+
+PCB source:
+https://github.com/Bread80/CPC_Keyboards/blob/bf4a6052888fef27ca01a6b0983791d7cb4e8af1/Keyswitch_CPC464_SMT/Keyboard.kicad_pcb
+Schematic:
+https://github.com/Bread80/CPC_Keyboards/blob/bf4a6052888fef27ca01a6b0983791d7cb4e8af1/Keyswitch_CPC464_SMT/Keyboard.kicad_sch
+Full notes: docs/wiring-dual-ribbon.md
+Regenerate: python3 scripts/generate_dual_ribbon.py

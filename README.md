@@ -16,6 +16,12 @@ CPC464 **J3 keyboard connector**. Its square contact 1 is shown at the bottom;
 labels give **GPIO / physical Pico pin**. See the [pinout sheet](docs/pinout.pdf)
 for connector checks and assembly details.
 
+**Original CPC464 PCB-style keyboard:** use the inline wiring above. Its
+19-signal connector pinout is shared by rgbwalker's keyboard and Bread80's
+CPC464 SMT **J3** connector. Some versions use a 20-position footprint with one
+unused contact. Later CPC464 membrane keyboards use the two-ribbon connection
+described below; connector orientation must still be checked on the actual board.
+
 ## Current state
 
 There is a buildable C firmware foundation using the Raspberry Pi Pico SDK and
@@ -46,7 +52,7 @@ interface PCB design yet.
 | Project | Initial integration |
 | --- | --- |
 | [rgbwalker's CPC464 Cherry keyboard](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard) | V1.2: digits, all letter rows, Esc and main Enter confirmed with a direct 19-wire harness. Further key/chord tests pending; retain ghost suppression. |
-| [Bread80 CPC464 SMT mechanical keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC464_SMT) | J3 pin map traced from the local KiCad PCB; per-key diodes allow disabling ghost suppression. |
+| [Bread80 CPC464 SMT mechanical keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC464_SMT) | J3 inline and J1 two-ribbon schemes traced from the KiCad PCB. J1 uses CPC464 link settings; hardware validation pending. Verified per-key diodes allow disabling ghost suppression. |
 | [Bread80 tactile keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Tactile) | Same CPC key arrangement, no diodes; connector adapter still needs checking. |
 | [Bread80 CPC6128 SMT keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC6128_SMT) | Upstream describes this as a design-stage board; not a validated adapter target. |
 
@@ -63,6 +69,23 @@ Regenerate the README's [SVG wiring diagram](docs/wiring.svg) with
 `python3 scripts/generate_wiring_svg.py` in the same environment. It reuses the
 Pico artwork from the supplied [pico-pinout.svg](pico-pinout.svg) and the same
 firmware-derived wiring data as the sheets.
+
+### Alternate connection: two 10-pin ribbons
+
+Bread80's **CPC464 SMT keyboard J1**, configured for CPC464, can use two 10-way
+ribbons with the existing Pico GPIO assignments. Bridge **LK1 pads 1-2** and
+**LK2 pads 1-2**; leave **LK3 and the bonus links open**. This alternate harness
+is source-checked and has not yet been bench-tested.
+
+[![Bread80 J1 two-ribbon wiring to Raspberry Pi Pico](docs/wiring-dual-ribbon.svg)](docs/wiring-dual-ribbon.svg)
+
+The diagram distinguishes ribbon positions from J1 PCB pad numbers. **J1 pad 19
+is unused; pad 20 is connected.** Here J1 refers to Bread80's keyboard connector.
+Use the [complete wiring scheme and orientation guide](docs/wiring-dual-ribbon.md),
+[ASCII pinout](docs/pinout-dual-ribbon.txt), or [two-page PDF](docs/pinout-dual-ribbon.pdf).
+This mapping is specific to the CPC464 setting; CPC6128 and Tactile connectors
+need separate mappings. Regenerate these files with
+`python3 scripts/generate_dual_ribbon.py` in the same documentation environment.
 
 ### Original CPC464 keyboard PCB
 

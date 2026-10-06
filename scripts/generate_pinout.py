@@ -19,7 +19,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-REVISION = "Revision 3 / 2026-10-06"
+REVISION = "Revision 4 / 2026-10-06"
 BREAD_REV = "bf4a6052888fef27ca01a6b0983791d7cb4e8af1"
 CHERRY_REV = "588e61006bb606d08cc981467d7990c6e3104c42"
 PICO_SOURCE = "https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf"
@@ -182,7 +182,8 @@ def generate_ascii():
               "For switch-pair identification, disconnect the keyboard from the Pico:",
               "an unpowered Pico can still provide other paths through its circuitry.",
               "Full procedure and test status: docs/wiring.md.", "",
-              "Bread80 tactile, J1/J2 membrane/modular and CPC6128 need their own",
+              "Bread80 J1, CPC464 links: see docs/pinout-dual-ribbon.txt and .pdf.",
+              "Bread80 tactile, J2 modular and CPC6128 need their own",
               "connector mapping. An 18-wire harness needs explicit X8/X9 handling.", "",
               "7. SOURCES AND REGENERATION", "-" * 76,
               f"Bread80 reference: {BREAD_REV}", BREAD_SOURCE,
@@ -411,7 +412,7 @@ class Sheet:
         y = self.paragraph("<b>Start directly:</b> keyboard <b>3 to Pico physical 16 (GP12)</b>; keyboard <b>11 to physical 14 (GP10)</b>. With USB unplugged, each wire must beep pad-to-pad without a key held. Connect USB: top-row 1 should type 1. Bypassing the earlier ribbon/jumper assembly restored this; its exact fault is unresolved.", y, 9.5)
         y = self.paragraph("Unplug USB, then add <b>4 to physical 17 (GP13)</b> for 2; next <b>5 to physical 19 (GP14)</b> for Esc. Check each wire before power. Esc prints no character. Complete contacts 1-19 using page 1, leave 20 disconnected, and keep <b>GOODJOHN_MATRIX_HAS_DIODES=OFF</b>. Details: docs/wiring.md.", y, 9.5)
         y = self.heading("Bread80 alternatives", y)
-        y = self.paragraph("<b>J1 membrane / J2 modular:</b> different pad orders, with routing affected by links. This sheet does not map those connectors. <b>Tactile board:</b> same X/Y scheme but different connector references and no diodes. <b>CPC6128 SMT:</b> upstream marks it as a design-stage board; it is not a validated adapter target.", y)
+        y = self.paragraph("<b>J1 membrane, CPC464 links:</b> see the separate <b>docs/pinout-dual-ribbon.pdf</b> and wiring-dual-ribbon.svg. <b>J2 modular:</b> not mapped here. <b>Tactile:</b> different connectors, no diodes. <b>CPC6128 SMT:</b> design-stage board; not a validated adapter target.", y)
         y = self.paragraph("An 18-wire adaptation must handle the shared X8/X9 net explicitly; simply omitting X9 loses DEL.", y, 9.5)
         y = self.heading("Source records", y)
         references = [
