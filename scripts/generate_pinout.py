@@ -19,7 +19,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-REVISION = "Revision 4 / 2026-10-06"
+REVISION = "Revision 5 / 2026-10-06"
 BREAD_REV = "bf4a6052888fef27ca01a6b0983791d7cb4e8af1"
 CHERRY_REV = "588e61006bb606d08cc981467d7990c6e3104c42"
 PICO_SOURCE = "https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf"
@@ -81,7 +81,9 @@ def generate_ascii():
         "STATUS: source-checked; rgbwalker V1.2 basic typing passed (section 6).",
         "Further individual key, chord and USB hardware tests remain pending.",
         "Firmware GPIO assignments: src/board_config.h.", "",
+        "WARNING: USB KEYBOARD USE ONLY. No simultaneous CPC/PC keyboard operation.",
         "DISCONNECT the keyboard from the CPC motherboard, even with CPC power off.",
+        "There is no pass-through mode. Switching the CPC off is not enough.",
         "Use 19 signal wires. No keyboard VCC or GND wire is required for this matrix.",
         "Do not wire a matrix contact to 5 V, VBUS, VSYS, 3V3 or GND.",
         "Power the Pico from the PC using a USB data cable.", "",
@@ -285,7 +287,7 @@ class Sheet:
 
     def quick_reference(self):
         y = self.begin("Keyboard-to-Pico wire list", "Bread80 CPC464 SMT / J3 19-pin connector / original RP2040 Pico or Pico H")
-        y = self.banner("<b>Keyboard disconnected from CPC.</b> Use 19 signal wires only. Do not connect a matrix contact to power or ground. Power the Pico through its USB connector.", y)
+        y = self.banner("<b>USB keyboard use only.</b> Physically disconnect the keyboard from the CPC motherboard, even when off. <b>No simultaneous CPC/PC keyboard operation.</b> Use 19 signal wires only; no matrix power or ground. Power the Pico by USB.", y)
         c = self.c
         labels = ["Keyboard J3", "Pico GPIO", "PC USB port"]
         box_w = 145

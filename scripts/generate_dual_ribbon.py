@@ -17,7 +17,7 @@ from reportlab.platypus import (
 
 from generate_pinout import ROOT, BY_NET, BREAD_REV, BREAD_SOURCE
 
-REVISION = "Revision 1 / 2026-10-06"
+REVISION = "Revision 2 / 2026-10-06"
 STEM = "wiring-dual-ribbon"
 SCHEMATIC_SOURCE = f"https://github.com/Bread80/CPC_Keyboards/blob/{BREAD_REV}/Keyswitch_CPC464_SMT/Keyboard.kicad_sch"
 SVG = "http://www.w3.org/2000/svg"
@@ -94,6 +94,12 @@ def generate_text():
 
 {REVISION}. **Source-checked; this J1 harness has not been bench-tested.**
 The rgbwalker J3-style harness has its own [hardware test record](wiring.md#hardware-test-record-2026-10-06).
+
+> [!WARNING]
+> **USB keyboard use only.** Physically disconnect the keyboard from the CPC
+> motherboard, even when the CPC is powered off. **The keyboard cannot operate
+> the CPC and PC simultaneously.** There is no pass-through mode; switching the
+> CPC off is not enough.
 
 [![Two-ribbon J1 wiring to Raspberry Pi Pico]({STEM}.svg)]({STEM}.svg)
 
@@ -197,7 +203,10 @@ from one connector dataset. Pico vector artwork comes from `pico-pinout.svg`.
     (ROOT / "docs" / f"{STEM}.md").write_text(md)
     lines = ["GOODJOHN - BREAD80 CPC464 SMT J1 / TWO 10-PIN RIBBONS", REVISION,
              "SOURCE-CHECKED; NOT BENCH-TESTED. CPC464 CONFIGURATION ONLY.", "",
-             "USB unplugged for wiring. Keyboard disconnected from CPC motherboard.",
+             "WARNING: USB KEYBOARD USE ONLY. No simultaneous CPC/PC keyboard operation.",
+             "Physically disconnect keyboard from CPC motherboard, even when powered off.",
+             "There is no pass-through mode. Switching the CPC off is not enough.",
+             "Unplug USB before wiring or meter checks.",
              "LK1: bridge 1-2 only. LK2: bridge 1-2. LK3 and LK4-LK6: OPEN.",
              "19 signal wires; no keyboard power or ground wire. Pico USB goes to PC.", "",
              ORIENTATION, "A/B are guide labels. A = odd J1 pads; B = even J1 pads.",
@@ -245,6 +254,8 @@ def generate_svg():
          "Keyboard J1 configured for CPC464. Ribbon A uses odd PCB pads; B uses even pads. "
          "Bridge LK1 pads 1-2 and LK2; leave LK3 open. Nineteen wires preserve X8 and X9 separately. "
          "A10, J1 pad 19, is unused. B10, J1 pad 20, connects Y1. USB supplies power and data. "
+         "USB keyboard use only. Physically disconnect keyboard from CPC motherboard even when powered off. "
+         "No simultaneous CPC and PC keyboard operation. "
          "Source-checked wiring guide, not bench-tested or a PCB layout.")
     node("rect", dict(width=1600, height=1420, fill="white"))
     source = ET.parse(ROOT / "pico-pinout.svg").getroot()
@@ -253,9 +264,10 @@ def generate_svg():
     label(48, 46, "GOODJOHN / ALTERNATE CONNECTOR", 16, "#076879", "700")
     label(48, 91, "Two 10-pin ribbons to Raspberry Pi Pico", 32, weight="700")
     label(48, 124, "Bread80 CPC464 SMT keyboard J1 / CPC464 link setting / 19 matrix signals", 19, muted)
-    node("rect", dict(x=40, y=150, width=1520, height=72, rx=10, fill="#fff3db"))
+    node("rect", dict(x=40, y=150, width=1520, height=90, rx=10, fill="#fff3db"))
     label(60, 179, "KEYBOARD LINKS: LK1 bridge pads 1-2 only; LK2 bridge pads 1-2; LK3 OPEN.", 20, weight="700")
-    label(60, 205, "Leave LK4-LK6 open. Disconnect CPC motherboard. Unplug USB before changing wires or links.", 17)
+    label(60, 205, "Leave LK4-LK6 open. Unplug USB before changing wires or links.", 17)
+    label(60, 229, "USB keyboard ONLY. Disconnect keyboard from CPC, even powered off. No simultaneous CPC/PC use.", 17, weight="700")
     node("rect", dict(x=40, y=245, width=1520, height=1080, rx=18, fill=bg, stroke="#cdd9df"))
     label(1515, 275, "Wiring guide: ribbons drawn separately; see orientation inset below", 15, muted, anchor="end")
 
@@ -383,7 +395,8 @@ def generate_pdf():
 
     p("Two 10-pin ribbons to Pico", title)
     p("<b>Bread80 CPC464 SMT / keyboard J1 / CPC464 link setting.</b><br/>Original RP2040 Pico or Pico H. Source-checked; this harness has not been bench-tested.")
-    p("<b>Unplug USB before wiring.</b> Disconnect the CPC motherboard. Bridge <b>LK1 pads 1-2 only</b> and <b>LK2 pads 1-2</b>. Leave <b>LK3 and LK4-LK6 open</b>.")
+    p("<b>USB keyboard use only.</b> Physically disconnect the keyboard from the CPC motherboard, even when powered off. <b>No simultaneous CPC/PC keyboard operation or pass-through mode.</b> Switching the CPC off is not enough.")
+    p("<b>Unplug USB before wiring.</b> Bridge <b>LK1 pads 1-2 only</b> and <b>LK2 pads 1-2</b>. Leave <b>LK3 and LK4-LK6 open</b>.")
     p("Ribbon A = odd J1 pads; ribbon B = even J1 pads. A/B are guide labels. Count both ribbons from the square J1 pad 1 end. Nineteen signals; no matrix power or ground wire.")
     table(["Ribbon pos.", "J1 PCB pad", "Net", "Pico GPIO", "Pico PHYSICAL pin"], wire_rows(), [86, 87, 60, 102, 184])
     p("<b>A10 / J1 pad 19 is unused. B10 / J1 pad 20 must connect to Y1.</b> GPIO numbers differ from physical pins. On the Pico component side, USB at top: physical 1-20 run down the left, 21-40 up the right.")

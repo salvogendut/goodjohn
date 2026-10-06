@@ -15,9 +15,11 @@ The PDF includes all 40 Pico header positions, the 19-wire J3 harness and
 unpowered switch checks. It distinguishes the source-checked J3 mapping from
 the rgbwalker V1.2 connector checks and initial hardware test.
 
-The keyboard must be disconnected electrically from the CPC motherboard,
-including when that motherboard is powered off. This firmware drives the matrix
-and is not a passive sniffer. The Pico GPIO interface is 3.3 V; do not connect
+**USB keyboard use only: the keyboard cannot operate the CPC and PC at the same
+time.** Physically disconnect it from the CPC motherboard, including when that
+motherboard is powered off. There is no simultaneous-use or pass-through mode;
+switching the CPC off is not enough. This firmware drives the matrix and is not
+a passive sniffer. The Pico GPIO interface is 3.3 V; do not connect
 CPC 5 V logic or USB VBUS to a matrix pin. The passive switch matrix does not
 need a VCC supply. Power the Pico through its USB connector.
 

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1160" width="1500" height="1160" role="img" aria-labelledby="diagram-title diagram-description">
   <title id="diagram-title">Goodjohn: Pico to 19-pin CPC keyboard connector</title>
-  <desc id="diagram-description">Top-view wiring guide. Adapter connector J1 uses the Bread80 CPC464 J3 contact order. Nineteen separate signal wires connect to Pico GPIO 2 through 20. Connector contact 19 is at the top and square contact 1 at the bottom. The Pico USB port carries both power and keyboard data to the PC. The CPC motherboard must be disconnected. This is not a PCB layout.</desc>
+  <desc id="diagram-description">Top-view wiring guide. Adapter connector J1 uses the Bread80 CPC464 J3 contact order. Nineteen separate signal wires connect to Pico GPIO 2 through 20. Connector contact 19 is at the top and square contact 1 at the bottom. The Pico USB port carries both power and keyboard data to the PC. USB keyboard use only: physically disconnect the keyboard from the CPC motherboard, even when it is powered off. No simultaneous CPC and PC keyboard operation. This is not a PCB layout.</desc>
   <rect width="1500" height="1160" fill="white" />
   <style type="text/css">
 	.st0{fill:none;}
@@ -1544,7 +1544,8 @@
   <text x="49" y="1056" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#087787" font-weight="700" text-anchor="start">Y1-Y10: scan outputs</text>
   <text x="294" y="1056" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7551ad" font-weight="700" text-anchor="start">X1-X9: sense inputs</text>
   <text x="544" y="1056" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#526572" font-weight="400" text-anchor="start">Crossing wires are not joined. Unmarked Pico pins are unused.</text>
-  <text x="49" y="1086" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#243847" font-weight="700" text-anchor="start">Disconnect the CPC motherboard. No keyboard power or ground wire; USB supplies the Pico.</text>
+  <rect x="40" y="1067" width="1420" height="30" rx="5" fill="#fff3db" />
+  <text x="49" y="1086" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#243847" font-weight="700" text-anchor="start">USB keyboard ONLY. Disconnect keyboard from CPC, even powered off. No simultaneous CPC/PC use.</text>
   <text x="49" y="1113" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#526572" font-weight="400" text-anchor="start">J1 follows Bread80 CPC464 SMT J3. rgbwalker V1.2 user-tested: digits, letters, Esc and main Enter (2026-10-06).</text>
   <text x="49" y="1140" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#526572" font-weight="400" text-anchor="start">Further key/chord and USB tests pending. Pico artwork adapted from supplied pico-pinout.svg. Test record: docs/wiring.md</text>
 </svg>

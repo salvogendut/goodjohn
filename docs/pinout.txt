@@ -1,5 +1,5 @@
 GOODJOHN - CPC KEYBOARD TO RASPBERRY PI PICO
-Revision 4 / 2026-10-06
+Revision 5 / 2026-10-06
 ============================================================================
 TARGET: Bread80 Keyswitch_CPC464_SMT, connector J3 (19 pins).
 PICO: original non-wireless RP2040 Pico / Pico H; component side up.
@@ -7,7 +7,9 @@ STATUS: source-checked; rgbwalker V1.2 basic typing passed (section 6).
 Further individual key, chord and USB hardware tests remain pending.
 Firmware GPIO assignments: src/board_config.h.
 
+WARNING: USB KEYBOARD USE ONLY. No simultaneous CPC/PC keyboard operation.
 DISCONNECT the keyboard from the CPC motherboard, even with CPC power off.
+There is no pass-through mode. Switching the CPC off is not enough.
 Use 19 signal wires. No keyboard VCC or GND wire is required for this matrix.
 Do not wire a matrix contact to 5 V, VBUS, VSYS, 3V3 or GND.
 Power the Pico from the PC using a USB data cable.

@@ -4,6 +4,13 @@ Goodjohn is a Raspberry Pi Pico interface for using an Amstrad CPC keyboard as
 a USB keyboard on a PC. This repository holds the firmware and the wiring basis
 for a future interface PCB.
 
+> [!WARNING]
+> **USB keyboard use only.** Physically disconnect the keyboard from the CPC
+> motherboard before connecting it to the Pico, even if the CPC is powered off.
+> **The keyboard cannot operate the CPC and the PC at the same time.** This
+> interface does not provide simultaneous use or a pass-through connection to
+> the CPC. Switching the CPC off is not a substitute for disconnecting it.
+
 The first prototype uses an **original RP2040 Pico**, an **English CPC/QWERTY
 keyboard**, and **exclusive control of a keyboard disconnected from the CPC
 motherboard**. These are the agreed initial requirements. The passive keyboard

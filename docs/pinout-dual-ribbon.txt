@@ -1,8 +1,11 @@
 GOODJOHN - BREAD80 CPC464 SMT J1 / TWO 10-PIN RIBBONS
-Revision 1 / 2026-10-06
+Revision 2 / 2026-10-06
 SOURCE-CHECKED; NOT BENCH-TESTED. CPC464 CONFIGURATION ONLY.
 
-USB unplugged for wiring. Keyboard disconnected from CPC motherboard.
+WARNING: USB KEYBOARD USE ONLY. No simultaneous CPC/PC keyboard operation.
+Physically disconnect keyboard from CPC motherboard, even when powered off.
+There is no pass-through mode. Switching the CPC off is not enough.
+Unplug USB before wiring or meter checks.
 LK1: bridge 1-2 only. LK2: bridge 1-2. LK3 and LK4-LK6: OPEN.
 19 signal wires; no keyboard power or ground wire. Pico USB goes to PC.
 

@@ -1,7 +1,13 @@
 # Bread80 CPC464 SMT: two 10-pin ribbons to Pico
 
-Revision 1 / 2026-10-06. **Source-checked; this J1 harness has not been bench-tested.**
+Revision 2 / 2026-10-06. **Source-checked; this J1 harness has not been bench-tested.**
 The rgbwalker J3-style harness has its own [hardware test record](wiring.md#hardware-test-record-2026-10-06).
+
+> [!WARNING]
+> **USB keyboard use only.** Physically disconnect the keyboard from the CPC
+> motherboard, even when the CPC is powered off. **The keyboard cannot operate
+> the CPC and PC simultaneously.** There is no pass-through mode; switching the
+> CPC off is not enough.
 
 [![Two-ribbon J1 wiring to Raspberry Pi Pico](wiring-dual-ribbon.svg)](wiring-dual-ribbon.svg)
 

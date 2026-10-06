@@ -37,7 +37,8 @@ def generate(root_path, wires):
          "Nineteen separate signal wires connect to Pico GPIO 2 through 20. "
          "Connector contact 19 is at the top and square contact 1 at the bottom. "
          "The Pico USB port carries both power and keyboard data to the PC. "
-         "The CPC motherboard must be disconnected. This is not a PCB layout.")
+         "USB keyboard use only: physically disconnect the keyboard from the CPC motherboard, "
+         "even when it is powered off. No simultaneous CPC and PC keyboard operation. This is not a PCB layout.")
     node("rect", dict(width=1500, height=1160, fill="white"))
     # Keep the original vector artwork and its styles, not a bitmap screenshot.
     svg.append(deepcopy(original.find(f"{{{SVG}}}style")))
@@ -146,7 +147,8 @@ def generate(root_path, wires):
     label(49, 1056, "Y1-Y10: scan outputs", 16, "#087787", "700")
     label(294, 1056, "X1-X9: sense inputs", 16, "#7551ad", "700")
     label(544, 1056, "Crossing wires are not joined. Unmarked Pico pins are unused.", 16, "#526572")
-    label(49, 1086, "Disconnect the CPC motherboard. No keyboard power or ground wire; USB supplies the Pico.", 17, weight="700")
+    node("rect", dict(x=40, y=1067, width=1420, height=30, rx=5, fill="#fff3db"))
+    label(49, 1086, "USB keyboard ONLY. Disconnect keyboard from CPC, even powered off. No simultaneous CPC/PC use.", 17, weight="700")
     label(49, 1113, "J1 follows Bread80 CPC464 SMT J3. rgbwalker V1.2 user-tested: digits, letters, Esc and main Enter (2026-10-06).", 15, "#526572")
     label(49, 1140, "Further key/chord and USB tests pending. Pico artwork adapted from supplied pico-pinout.svg. Test record: docs/wiring.md", 13, "#526572")
 
