@@ -2,9 +2,9 @@
 
 This is a wiring proposal checked against source files, **not a bench-validated
 schematic or an interface PCB ready for manufacture**. GPIO numbers below are
-for the original non-wireless RP2040 Raspberry Pi Pico. A direct two-wire test
-of the top-row `1` key on rgbwalker V1.2 passed on 2026-10-06; the full keyboard
-has not yet been validated.
+for the original non-wireless RP2040 Raspberry Pi Pico. On 2026-10-06, the user
+confirmed digits, all letter rows, Esc and main Enter on rgbwalker V1.2 with a
+completed 19-wire direct harness. Further key/chord and USB tests remain pending.
 
 Printable companions: [ASCII pinout](pinout.txt) and [detailed PDF](pinout.pdf).
 The [SVG wiring overview](wiring.svg) shows the Pico and a proposed J1 adapter
@@ -128,14 +128,37 @@ from the CPC motherboard. Use direct individual jumpers for these initial tests.
 3. **Add Esc:** keyboard contact 5 to Pico physical pin 19 (GP14). After checking
    its wire, verify Esc in a keyboard event viewer or an application with a known
    Esc action. Esc does not print a character.
-4. **Complete the harness:** add the remaining connections from the wire list,
+4. **Complete the number row:** add keyboard contacts 12, 13, 14, 15 and 16 to
+   Pico physical pins 12, 11, 10, 9 and 7 respectively. Check each wire, then
+   power up and type `1234567890` using the top-row keys.
+5. **Complete the harness:** add the remaining connections from the wire list,
    checking each pad-to-pad connection before powering up. Test every key
    individually before modifiers and chords. Keep contact 20 disconnected.
 
+### Hardware test record: 2026-10-06
+
+The user completed the direct harness with the existing firmware and reported
+that the following tests passed:
+
+| Test | Confirmed result |
+| --- | --- |
+| Initial two-wire test | Top-row `1` types `1` |
+| Add contact 4 | Top-row `1` and `2` type correctly |
+| Add contact 5 | Esc works; `1` and `2` still type correctly |
+| Add contacts 12 through 16 | Top-row digits produce `1234567890` |
+| Complete all 19 wires | `qwertyuiop`, `asdfghjkl`, `zxcvbnm` and main Enter work |
+
+This establishes basic typing on this V1.2 prototype. Individual results for
+Space, Tab, modifiers/lock keys, DEL/CLR, punctuation, cursor and keypad keys
+have not yet been recorded. Chords/ghost suppression, rollover, cable timing,
+USB reconnect and suspend/resume/current also need hardware checks. Other board
+variants retain their separate validation status.
+
 The original ribbon/jumper assembly produced incorrect characters and failed
 the intended end-to-end wire checks. Bypassing it with the two direct wires
-restored `1`. This implicates the assembly or its connections, but does not
-establish which connector, contact or wire was wrong. Do not shift the entire
+restored `1`; completing the direct harness then passed the tests above. This
+implicates the assembly or its connections, but does not establish which
+connector, contact or wire was wrong. Do not shift the entire
 harness or change the keymap on that evidence alone.
 
 To reuse a ribbon or adapter, disconnect it from the Pico and map each keyboard

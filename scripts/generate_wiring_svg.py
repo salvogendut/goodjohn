@@ -147,8 +147,8 @@ def generate(root_path, wires):
     label(294, 1056, "X1-X9: sense inputs", 16, "#7551ad", "700")
     label(544, 1056, "Crossing wires are not joined. Unmarked Pico pins are unused.", 16, "#526572")
     label(49, 1086, "Disconnect the CPC motherboard. No keyboard power or ground wire; USB supplies the Pico.", 17, weight="700")
-    label(49, 1113, "Contact order checked against Bread80 CPC464 SMT J3; verify original/other keyboard revisions before wiring.", 15, "#526572")
-    label(49, 1140, "Full keyboard validation pending. Pico artwork adapted from the supplied pico-pinout.svg. Details: docs/pinout.pdf", 13, "#526572")
+    label(49, 1113, "J1 follows Bread80 CPC464 SMT J3. rgbwalker V1.2 user-tested: digits, letters, Esc and main Enter (2026-10-06).", 15, "#526572")
+    label(49, 1140, "Further key/chord and USB tests pending. Pico artwork adapted from supplied pico-pinout.svg. Test record: docs/wiring.md", 13, "#526572")
 
     ET.indent(svg, space="  ")
     path = root_path / "docs/wiring.svg"

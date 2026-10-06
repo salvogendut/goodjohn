@@ -1,10 +1,10 @@
 GOODJOHN - CPC KEYBOARD TO RASPBERRY PI PICO
-Revision 2 / 2026-10-06
+Revision 3 / 2026-10-06
 ============================================================================
 TARGET: Bread80 Keyswitch_CPC464_SMT, connector J3 (19 pins).
 PICO: original non-wireless RP2040 Pico / Pico H; component side up.
-STATUS: source-checked; full keyboard validation pending.
-rgbwalker V1.2: direct two-wire test of top-row 1 passed; see section 6.
+STATUS: source-checked; rgbwalker V1.2 basic typing passed (section 6).
+Further individual key, chord and USB hardware tests remain pending.
 Firmware GPIO assignments: src/board_config.h.
 
 DISCONNECT the keyboard from the CPC motherboard, even with CPC power off.
@@ -141,7 +141,8 @@ Test chords: diode-less matrices suppress ambiguous new keys, so some
 chords will be blocked. Do not disable that filter to cure missing keys.
 Above six regular keys, HID reports ErrorRollOver until keys are released.
 Exact shifted CPC symbols depend on the PC layout; no Fn layer yet.
-Full keyboard, USB suspend current and suspend/resume remain unverified.
+V1.2 digits, letters, Esc and main Enter passed; see section 6.
+Other keys/chords, USB suspend current and suspend/resume need checks.
 
 6. RGBWALKER V1.2 - CONNECTOR AND DIRECT-WIRE BRING-UP
 ----------------------------------------------------------------------------
@@ -162,10 +163,14 @@ Unplug USB before each wiring change or meter check. Start directly:
 Each pad-to-pad wire path must beep WITHOUT pressing a key. Then power
 by USB and press top-row 1. This direct test passed on 2026-10-06.
 Bypassing the previous ribbon/jumper assembly restored 1; its exact
-fault has not been identified. Other keys and chords still need testing.
+fault has not been identified. Firmware and keymap changes were not needed.
 Next add keyboard 4 -> Pico 17 (GP13) for 2, then 5 -> Pico 19 (GP14)
 for Esc. Check each wire before USB power. Esc prints no character.
+Then add contacts 12..16 -> physical pins 12,11,10,9,7 for digits 1..0.
 Complete contacts 1..19 using section 1; keep contact 20 disconnected.
+USER-CONFIRMED, 2026-10-06: completed 19-wire direct harness passes
+1234567890, qwertyuiop, asdfghjkl, zxcvbnm, Esc and main Enter.
+Individual remaining keys, modifiers, chords and USB tests are pending.
 Before reusing an adapter, map and label every wire with a meter.
 For switch-pair identification, disconnect the keyboard from the Pico:
 an unpowered Pico can still provide other paths through its circuitry.

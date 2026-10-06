@@ -19,7 +19,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-REVISION = "Revision 2 / 2026-10-06"
+REVISION = "Revision 3 / 2026-10-06"
 BREAD_REV = "bf4a6052888fef27ca01a6b0983791d7cb4e8af1"
 CHERRY_REV = "588e61006bb606d08cc981467d7990c6e3104c42"
 PICO_SOURCE = "https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf"
@@ -78,8 +78,8 @@ def generate_ascii():
         "=" * 76,
         "TARGET: Bread80 Keyswitch_CPC464_SMT, connector J3 (19 pins).",
         "PICO: original non-wireless RP2040 Pico / Pico H; component side up.",
-        "STATUS: source-checked; full keyboard validation pending.",
-        "rgbwalker V1.2: direct two-wire test of top-row 1 passed; see section 6.",
+        "STATUS: source-checked; rgbwalker V1.2 basic typing passed (section 6).",
+        "Further individual key, chord and USB hardware tests remain pending.",
         "Firmware GPIO assignments: src/board_config.h.", "",
         "DISCONNECT the keyboard from the CPC motherboard, even with CPC power off.",
         "Use 19 signal wires. No keyboard VCC or GND wire is required for this matrix.",
@@ -151,7 +151,8 @@ def generate_ascii():
               "chords will be blocked. Do not disable that filter to cure missing keys.",
               "Above six regular keys, HID reports ErrorRollOver until keys are released.",
               "Exact shifted CPC symbols depend on the PC layout; no Fn layer yet.",
-              "Full keyboard, USB suspend current and suspend/resume remain unverified.", "",
+              "V1.2 digits, letters, Esc and main Enter passed; see section 6.",
+              "Other keys/chords, USB suspend current and suspend/resume need checks.", "",
               "6. RGBWALKER V1.2 - CONNECTOR AND DIRECT-WIRE BRING-UP", "-" * 76,
               "DO NOT treat J3's table as a verified pinout for every 20-pin keyboard.",
               "V1.2 Gerbers: CP002_THT and CP002_SMD contacts 1..19 match each other.",
@@ -169,10 +170,14 @@ def generate_ascii():
               "Each pad-to-pad wire path must beep WITHOUT pressing a key. Then power",
               "by USB and press top-row 1. This direct test passed on 2026-10-06.",
               "Bypassing the previous ribbon/jumper assembly restored 1; its exact",
-              "fault has not been identified. Other keys and chords still need testing.",
+              "fault has not been identified. Firmware and keymap changes were not needed.",
               "Next add keyboard 4 -> Pico 17 (GP13) for 2, then 5 -> Pico 19 (GP14)",
               "for Esc. Check each wire before USB power. Esc prints no character.",
+              "Then add contacts 12..16 -> physical pins 12,11,10,9,7 for digits 1..0.",
               "Complete contacts 1..19 using section 1; keep contact 20 disconnected.",
+              "USER-CONFIRMED, 2026-10-06: completed 19-wire direct harness passes",
+              "1234567890, qwertyuiop, asdfghjkl, zxcvbnm, Esc and main Enter.",
+              "Individual remaining keys, modifiers, chords and USB tests are pending.",
               "Before reusing an adapter, map and label every wire with a meter.",
               "For switch-pair identification, disconnect the keyboard from the Pico:",
               "an unpowered Pico can still provide other paths through its circuitry.",
@@ -273,7 +278,7 @@ class Sheet:
         c.line(MARGIN, 36, PAGE_W - MARGIN, 36)
         c.setFillColor(MUTED)
         c.setFont("Helvetica", 8)
-        c.drawString(MARGIN, 23, REVISION + "  |  Full keyboard validation pending")
+        c.drawString(MARGIN, 23, REVISION + "  |  V1.2 basic typing passed; further tests pending")
         c.drawRightString(PAGE_W - MARGIN, 23, f"{self.page} / 4")
         return PAGE_H - 113
 
@@ -389,11 +394,11 @@ class Sheet:
         y = self.heading("Flash, then test on the PC", y)
         y = self.paragraph("Hold BOOTSEL while connecting the Pico, then copy <b>build/goodjohn.uf2</b> to RPI-RP2. Use a USB data cable. Check every key and release, modifiers, DEL and both Enter keys. COPY sends Alt; DEL sends Backspace; CLR sends forward Delete. Set the PC's Num Lock for keypad digits.", y, 9.5)
         y = self.paragraph("If one group of keys fails, recheck its X/Y wire and diode orientation. If only chords fail on a board without diodes, ghost suppression may be blocking ambiguity. More than six regular keys produces HID ErrorRollOver. Shifted symbols follow the PC layout; there is no Fn layer yet.", y, 9.5)
-        self.paragraph("Full keyboard, cable settling, suspend current and suspend/resume still need bench tests. One directly wired key on rgbwalker V1.2 has typed correctly over USB; see page 4. No USB remote wakeup or low-power suspend implementation is provided yet.", y, 8.5, MUTED)
+        self.paragraph("V1.2 digits, all letter rows, Esc and main Enter passed with the completed direct harness; see page 4. Remaining keys, chords, cable settling, USB reconnect and suspend still need tests. No USB remote wakeup or low-power suspend implementation is provided yet.", y, 8.5, MUTED)
 
     def variants(self):
         y = self.begin("Other boards and source notes", "The logical CPC key matrix is shared; connector order and jumper routing are not universal.")
-        y = self.banner("<b>rgbwalker V1.2: first key test passed.</b> On 2026-10-06, top-row <b>1</b> typed <b>1</b> with two direct wires. The full keyboard remains unverified.", y)
+        y = self.banner("<b>rgbwalker V1.2: basic typing passed (2026-10-06).</b> User confirmed digits, all letter rows, Esc and main Enter with the completed 19-wire direct harness.", y)
         y = self.paragraph("V1.2 Gerbers connect CP002_THT and CP002_SMD contacts 1-19 in the same order; contact 20 is isolated from the matrix. Count the <b>square pad as 1 at the Esc end</b>, toward Shift. Check other revisions separately.", y, 9.5)
         rows = [
             ["Expected contact(s)", "Expected switch lines", "Pico harness, if confirmed"],

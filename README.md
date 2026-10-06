@@ -30,22 +30,22 @@ continue to work. This cannot recover arbitrary chords or detect a release that
 is electrically hidden by other held keys. Fully diode-isolated boards can turn
 the filter off at build time.
 
-**Status: host tests pass; the first physical key test passed on rgbwalker
-V1.2 (2026-10-06).** With keyboard contact 3 connected directly to Pico physical
-pin 16 (GP12), and contact 11 to pin 14 (GP10), the top-row `1` key types `1`
-over USB. Bypassing the previous ribbon/jumper assembly restored this operation;
-the exact fault in that assembly has not been identified. Follow the
-[staged wiring checks](docs/wiring.md#staged-bring-up-for-rgbwalker-v12)
-before reconnecting the full harness.
+**Status: host tests pass; basic typing works on rgbwalker V1.2.** On 2026-10-06,
+the user confirmed the complete number row (`1234567890`), all three letter rows,
+Esc and main Enter with the completed 19-wire direct harness. Replacing the
+earlier ribbon/jumper path resolved the incorrect characters using the existing
+firmware and pin map. The exact fault in that earlier assembly is still unknown.
+See the [staged wiring checks and test record](docs/wiring.md#staged-bring-up-for-rgbwalker-v12).
 
-Full-keyboard operation, chords, cable timing, and USB suspend/resume and current
-still need bench tests. There is no interface PCB design yet.
+The remaining individual keys, modifiers, chords, cable timing, and USB
+suspend/resume and current still need recorded bench tests. There is no
+interface PCB design yet.
 
 ## Keyboard projects
 
 | Project | Initial integration |
 | --- | --- |
-| [rgbwalker's CPC464 Cherry keyboard](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard) | V1.2 connector routing inspected; direct two-wire test of top-row `1` passed. Full-keyboard validation pending; retain ghost suppression. |
+| [rgbwalker's CPC464 Cherry keyboard](https://github.com/rgbwalker/Amstrad_CPC_464_new_Cherry_Keyboard) | V1.2: digits, all letter rows, Esc and main Enter confirmed with a direct 19-wire harness. Further key/chord tests pending; retain ghost suppression. |
 | [Bread80 CPC464 SMT mechanical keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC464_SMT) | J3 pin map traced from the local KiCad PCB; per-key diodes allow disabling ghost suppression. |
 | [Bread80 tactile keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Tactile) | Same CPC key arrangement, no diodes; connector adapter still needs checking. |
 | [Bread80 CPC6128 SMT keyboard](https://github.com/Bread80/CPC_Keyboards/tree/main/Keyswitch_CPC6128_SMT) | Upstream describes this as a design-stage board; not a validated adapter target. |
